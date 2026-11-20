@@ -1,0 +1,6 @@
+{
+  "name": "Pausa.",
+  "description": "Menos piloto automático, mais presença. Aplicativo de bem-estar digital e autorregulação baseado em evidências científicas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
