@@ -33,6 +33,7 @@ export interface ArchetypeDetails {
 }
 
 export type TriggerId =
+  | 'comparacao'
   | 'tedio'
   | 'ansiedade'
   | 'fomo'
@@ -85,6 +86,7 @@ export interface PatternAnalysisResult {
 export interface PausaAppState {
   profile: DigitalProfile | null;
   grayscaleMode: boolean;
+  simulateNightMode: boolean;
   pauses: PauseRecord[];
   activeTimer: ActiveConsciousTimer | null;
   customOfflineActivities: OfflineActivity[];

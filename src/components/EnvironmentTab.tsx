@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, Copy } from 'lucide-react';
 import { ENVIRONMENT_CHECKLIST } from '../data/pausaContent';
 import { calculateEnvironmentProgress } from '../utils/pausaLogic';
 
@@ -10,7 +10,18 @@ interface EnvironmentTabProps {
 
 export function EnvironmentTab({ checkedIds, onToggleItem }: EnvironmentTabProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [copiedUrl, setCopiedUrl] = useState(false);
   const progress = calculateEnvironmentProgress(checkedIds);
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.origin);
+      setCopiedUrl(true);
+      window.setTimeout(() => setCopiedUrl(false), 2000);
+    } catch {
+      // Ignore clipboard permission denials gracefully
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -126,13 +137,45 @@ export function EnvironmentTab({ checkedIds, onToggleItem }: EnvironmentTabProps
                   </div>
 
                   {isExpanded && (
-                    <div className="mt-2.5 pt-3 border-t border-[#E5E2DC] space-y-1">
-                      <p className="text-xs font-semibold text-[#2B2D2B]">
-                        {item.whyTitle}
-                      </p>
-                      <p className="text-xs sm:text-sm text-[#6B6F6C] leading-relaxed">
-                        {item.whyBody}
-                      </p>
+                    <div className="mt-2.5 pt-3 border-t border-[#E5E2DC] space-y-2.5">
+                      <div className="space-y-1">
+                        <p className="text-xs font-semibold text-[#2B2D2B]">
+                          {item.whyTitle}
+                        </p>
+                        <p className="text-xs sm:text-sm text-[#6B6F6C] leading-relaxed">
+                          {item.whyBody}
+                        </p>
+                      </div>
+
+                      {item.setupGuides && item.setupGuides.length > 0 && (
+                        <div className="space-y-2 pt-1">
+                          {item.setupGuides.map((guide) => (
+                            <div
+                              key={guide.platform}
+                              className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-3 space-y-1"
+                            >
+                              <p className="text-xs font-semibold text-[#2B2D2B]">
+                                {guide.platform}
+                              </p>
+                              <p className="text-xs text-[#6B6F6C] leading-relaxed">
+                                {guide.steps}
+                              </p>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={handleCopyUrl}
+                            className="min-h-[38px] px-3 py-1.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#6A8D73] text-xs font-medium text-[#2B2D2B] inline-flex items-center gap-1.5 transition-colors"
+                          >
+                            <Copy className="w-3.5 h-3.5 text-[#6A8D73]" strokeWidth={1.7} />
+                            <span>
+                              {copiedUrl
+                                ? 'Endereço do Pausa. copiado'
+                                : 'Copiar link do Pausa.'}
+                            </span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

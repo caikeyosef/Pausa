@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Check, Plus, Shuffle, Trash2 } from 'lucide-react';
+import { Check, Plus, Shuffle, Timer, Trash2 } from 'lucide-react';
 import { DURATION_LABELS } from '../data/pausaContent';
 import type { OfflineActivity, OfflineDuration } from '../types';
 import { filterOfflineActivities, pickSurpriseActivity } from '../utils/pausaLogic';
+import { OfflineTimerModal } from './OfflineTimerModal';
 
 interface OfflineTabProps {
   activities: OfflineActivity[];
@@ -28,6 +29,7 @@ export function OfflineTab({
 }: OfflineTabProps) {
   const [filter, setFilter] = useState<'all' | OfflineDuration>('all');
   const [surprisedActivity, setSurprisedActivity] = useState<OfflineActivity | null>(null);
+  const [activeTimerActivity, setActiveTimerActivity] = useState<OfflineActivity | null>(null);
   const [recentlyDoneId, setRecentlyDoneId] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -172,7 +174,15 @@ export function OfflineTab({
               {surprisedActivity.title}
             </p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setActiveTimerActivity(surprisedActivity)}
+              className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white border border-[#E5E2DC] hover:border-[#6A8D73] text-[#2B2D2B] text-sm font-medium inline-flex items-center gap-1.5 transition-colors whitespace-nowrap"
+            >
+              <Timer className="w-4 h-4 text-[#6A8D73]" strokeWidth={1.7} />
+              <span>Iniciar timer</span>
+            </button>
             <button
               type="button"
               onClick={() => handleComplete(surprisedActivity.id)}
@@ -305,24 +315,41 @@ export function OfflineTab({
                 </h2>
               </div>
 
-              <button
-                type="button"
-                onClick={() => handleComplete(activity.id)}
-                className={`min-h-[44px] w-full px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-medium inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap ${
-                  isJustDone
-                    ? 'bg-[#ECF2ED] border-[#6A8D73]/30 text-[#587860]'
-                    : 'bg-[#FAF9F6] border-[#E5E2DC] text-[#2B2D2B] hover:border-[#6A8D73] hover:text-[#587860]'
-                }`}
-              >
-                <Check className="w-4 h-4" strokeWidth={1.7} />
-                <span>
-                  {isJustDone ? 'Ação registrada' : 'Concluí fora da tela'}
-                </span>
-              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveTimerActivity(activity)}
+                  aria-label={`Iniciar timer para ${activity.title}`}
+                  className="min-h-[44px] px-3 py-2 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#6A8D73] text-[#2B2D2B] text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap"
+                >
+                  <Timer className="w-3.5 h-3.5 text-[#6A8D73]" strokeWidth={1.7} />
+                  <span>Iniciar timer</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleComplete(activity.id)}
+                  className={`min-h-[44px] px-3 py-2 rounded-xl border text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap ${
+                    isJustDone
+                      ? 'bg-[#ECF2ED] border-[#6A8D73]/30 text-[#587860]'
+                      : 'bg-[#FAF9F6] border-[#E5E2DC] text-[#2B2D2B] hover:border-[#6A8D73] hover:text-[#587860]'
+                  }`}
+                >
+                  <Check className="w-3.5 h-3.5" strokeWidth={1.7} />
+                  <span>
+                    {isJustDone ? 'Registrado' : 'Concluí'}
+                  </span>
+                </button>
+              </div>
             </article>
           );
         })}
       </div>
+
+      <OfflineTimerModal
+        activity={activeTimerActivity}
+        onClose={() => setActiveTimerActivity(null)}
+        onComplete={(id) => handleComplete(id)}
+      />
     </div>
   );
 }

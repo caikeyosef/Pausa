@@ -21,6 +21,7 @@ interface PatternAnalysisRequest {
     topTriggers: Array<{ label: string; count: number; percentage: number }>;
     periodDistribution: Array<{ label: string; count: number }>;
     isBedtimeConcentrated: boolean;
+    comparisonCount?: number;
     recentReflections: Array<{
       trigger: string;
       period: string;
@@ -95,11 +96,14 @@ async function startServer() {
         )
         .join('\n');
 
+      const comparisonCount = body.journalSummary.comparisonCount ?? 0;
+
       const prompt = `Analise com acolhimento os dados abaixo de uma pessoa usando o app "Pausa." de bem-estar digital baseado em evidências (TCC e redução sustentável de 30 a 60 min/dia, nunca abstinência punitiva).
 
 ${profileContext}
 Total de registros no diário: ${body.journalSummary.totalEntries}
 Principais gatilhos: ${triggersText}
+Episódios com gatilho de Comparação: ${comparisonCount}
 Distribuição por período: ${periodsText}
 Concentração antes de dormir: ${body.journalSummary.isBedtimeConcentrated ? 'Sim' : 'Não'}
 Checklist de ambiente: ${body.environmentCompleted}/${body.environmentTotal} ajustes ativos
@@ -110,7 +114,7 @@ ${reflectionsText || 'Sem anotações detalhadas.'}
 
 Retorne um JSON estruturado em português do Brasil, conciso, empático, sem culpa ou julgamento, com:
 - summary: 1 parágrafo curto (2 frases no máximo) acolhendo o padrão observado.
-- recommendations: exatamente 3 recomendações práticas e gentis (cada uma com title curto e action direta de 1 a 2 frases) conectadas aos gatilhos, períodos e ajustes do usuário.`;
+- recommendations: exatamente 3 recomendações práticas e gentis (cada uma com title curto e action direta de 1 a 2 frases) conectadas aos gatilhos, períodos e ajustes do usuário. Se houver episódios de "Comparação", inclua pelo menos uma recomendação gentil voltada à curadoria do feed (como silenciar contas que geram comparação) e ao cuidado emocional diante de recortes irreais.`;
 
       const response = await ai.models.generateContent({
         model: 'gemini-4-hydrogen',

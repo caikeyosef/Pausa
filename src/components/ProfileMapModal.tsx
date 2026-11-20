@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, RotateCcw, X, Database, Trash2 } from 'lucide-react';
+import { ArrowRight, RotateCcw, X, Database, Trash2, Moon } from 'lucide-react';
 import { LIKERT_LABELS, PROFILE_QUESTIONS } from '../data/pausaContent';
 import type { DigitalProfile, DimensionKey, ProfileAnswers, TabId } from '../types';
 import { calculateDominantArchetype, DEFAULT_PROFILE_ANSWERS } from '../utils/pausaLogic';
@@ -8,6 +8,8 @@ import { ProfileRadarChart } from './ProfileRadarChart';
 interface ProfileMapModalProps {
   mode: 'onboarding' | 'profile';
   existingProfile: DigitalProfile | null;
+  simulateNightMode?: boolean;
+  onToggleSimulateNightMode?: () => void;
   onSaveProfile: (profile: DigitalProfile, navigateToTab?: TabId) => void;
   onFinishOnboarding?: (navigateToTab?: TabId) => void;
   onClose?: () => void;
@@ -18,6 +20,8 @@ interface ProfileMapModalProps {
 export function ProfileMapModal({
   mode,
   existingProfile,
+  simulateNightMode = false,
+  onToggleSimulateNightMode,
   onSaveProfile,
   onFinishOnboarding,
   onClose,
@@ -323,6 +327,44 @@ export function ProfileMapModal({
               </div>
             </section>
           </div>
+
+          {/* Night mode test switch in Profile view */}
+          {mode === 'profile' && onToggleSimulateNightMode && (
+            <section className="bg-white border border-[#E5E2DC] rounded-2xl px-5 py-4 flex items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <Moon
+                  className="w-4 h-4 text-[#6A8D73] shrink-0 mt-0.5"
+                  strokeWidth={1.6}
+                  aria-hidden="true"
+                />
+                <div>
+                  <p className="text-sm font-medium text-[#2B2D2B]">
+                    Simular modo noturno
+                  </p>
+                  <p className="text-xs text-[#6B6F6C] mt-0.5">
+                    Exibe o aviso noturno (22h–05h) na aba Pausar para testar em qualquer
+                    horário.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={simulateNightMode}
+                aria-label="Simular modo noturno"
+                onClick={onToggleSimulateNightMode}
+                className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6A8D73] ${
+                  simulateNightMode ? 'bg-[#6A8D73]' : 'bg-[#DEDAD1]'
+                }`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${
+                    simulateNightMode ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </section>
+          )}
 
           {/* Utility row: Refazer + Carregar dados de exemplo / Limpar dados */}
           <div className="pt-3 border-t border-[#E5E2DC] flex flex-col sm:flex-row sm:items-center justify-between gap-3">

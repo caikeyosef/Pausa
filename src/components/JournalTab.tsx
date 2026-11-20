@@ -39,12 +39,13 @@ export function JournalTab({
   onDeleteEntry,
   onSaveAnalysis,
 }: JournalTabProps) {
-  const [selectedTrigger, setSelectedTrigger] = useState<TriggerId>('tedio');
+  const [selectedTrigger, setSelectedTrigger] = useState<TriggerId>('comparacao');
   const [selectedPeriod, setSelectedPeriod] = useState<DayPeriodId>(() =>
     getCurrentDayPeriod()
   );
   const [needNote, setNeedNote] = useState('');
   const [justSaved, setJustSaved] = useState(false);
+  const [showComparisonReminder, setShowComparisonReminder] = useState(false);
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
@@ -56,6 +57,7 @@ export function JournalTab({
     onAddEntry(selectedTrigger, selectedPeriod, needNote.trim() || undefined);
     setNeedNote('');
     setJustSaved(true);
+    setShowComparisonReminder(selectedTrigger === 'comparacao');
     window.setTimeout(() => setJustSaved(false), 2000);
   };
 
@@ -95,6 +97,7 @@ export function JournalTab({
             count: p.count,
           })),
           isBedtimeConcentrated: analytics.isBedtimeConcentrated,
+          comparisonCount: entries.filter((e) => e.trigger === 'comparacao').length,
           recentReflections: entries.slice(0, 10).map((entry) => ({
             trigger:
               TRIGGERS.find((t) => t.id === entry.trigger)?.label ?? entry.trigger,
@@ -270,6 +273,17 @@ export function JournalTab({
           >
             {justSaved ? 'Registro salvo no diário' : 'Registrar no diário'}
           </button>
+
+          {showComparisonReminder && (
+            <p
+              role="status"
+              data-testid="comparison-reminder"
+              className="text-xs sm:text-sm text-[#2B2D2B] bg-[#F6F4EF] border border-[#E5E2DC] rounded-xl p-3.5 leading-relaxed"
+            >
+              Lembrete: o feed mistura o melhor recorte de dezenas de vidas contra um dia
+              comum da sua.
+            </p>
+          )}
         </form>
 
         {/* Right: Insights + Gemini Pattern Analysis + History */}

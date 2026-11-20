@@ -117,6 +117,7 @@ export const ARCHETYPES: Record<ProfileArchetypeId, ArchetypeDetails> = {
 };
 
 export const TRIGGERS: Array<{ id: TriggerId; label: string; hint: string }> = [
+  { id: 'comparacao', label: 'Comparação', hint: 'Medindo sua vida pelo feed' },
   { id: 'tedio', label: 'Tédio', hint: 'Momento vazio ou espera' },
   { id: 'ansiedade', label: 'Ansiedade / Estresse', hint: 'Pressão ou inquietação' },
   { id: 'fomo', label: 'FoMO', hint: 'Medo de ficar por fora' },
@@ -157,11 +158,17 @@ export const DEFAULT_OFFLINE_ACTIVITIES: OfflineActivity[] = [
   { id: 'off-30-4', title: 'Encontrar ou ligar para um amigo', duration: '30min' },
 ];
 
+export interface EnvironmentChecklistGuideStep {
+  platform: string;
+  steps: string;
+}
+
 export interface EnvironmentChecklistItem {
   id: string;
   title: string;
   whyTitle: string;
   whyBody: string;
+  setupGuides?: EnvironmentChecklistGuideStep[];
 }
 
 export const ENVIRONMENT_CHECKLIST: EnvironmentChecklistItem[] = [
@@ -201,6 +208,33 @@ export const ENVIRONMENT_CHECKLIST: EnvironmentChecklistItem[] = [
     whyBody:
       'A rolagem noturna adia o sono quando a autorregulação está mais cansada. Manter o aparelho fora do alcance da cama reduz o uso noturno e evita começar a manhã já reativo.',
   },
+  {
+    id: 'env-mute-comparison',
+    title: 'Silenciar pelo menos 3 contas que despertam comparação ou ansiedade.',
+    whyTitle: 'Curadoria emocional do seu feed',
+    whyBody:
+      'O cérebro humano compara o próprio cotidiano real com recortes editados e altamente selecionados de outras pessoas. Silenciar perfis que geram desconforto reduz o gatilho na origem sem precisar deixar de seguir ou criar atrito social.',
+  },
+  {
+    id: 'env-auto-intercept',
+    title:
+      'Configurar atalho de interceptação automática para abrir o Pausa. ao tocar em uma rede social.',
+    whyTitle: 'O poder do atraso antes de abrir o app',
+    whyBody:
+      'Criar um pequeno atraso automático no instante em que você toca em um aplicativo de rede social (como nos apps One Sec e Opal) quebra o reflexo condicionado e devolve a escolha consciente antes do feed carregar.',
+    setupGuides: [
+      {
+        platform: 'iPhone (app Atalhos)',
+        steps:
+          'Atalhos → Automação → "+" → App (ao ser aberto) → Escolha a rede social → Marque "Executar imediatamente" → Adicionar ação "Abrir URLs" com o link do Pausa.',
+      },
+      {
+        platform: 'Android / Samsung (Modos e Rotinas)',
+        steps:
+          'Configurações → Modos e Rotinas → Rotinas (+) → Se: App aberto (escolha a rede social) → Então: Abrir site ou abrir o atalho do Pausa.',
+      },
+    ],
+  },
 ];
 
 export function createSampleAppState(now: Date = new Date()): PausaAppState {
@@ -221,6 +255,7 @@ export function createSampleAppState(now: Date = new Date()): PausaAppState {
       completedAt: todayIso(48),
     },
     grayscaleMode: false,
+    simulateNightMode: false,
     pauses: [
       { id: 'sample-p1', outcome: 'resisted', createdAt: todayIso(5) },
       { id: 'sample-p2', outcome: 'resisted', createdAt: todayIso(2.5) },
@@ -239,6 +274,14 @@ export function createSampleAppState(now: Date = new Date()): PausaAppState {
     offlineCompletedCount: 6,
     journalEntries: [
       {
+        id: 'sample-j0',
+        trigger: 'comparacao',
+        period: 'noite',
+        needNote: 'Lembrar do meu próprio ritmo e fechar o feed por hoje',
+        createdAt: todayIso(3),
+        source: 'journal',
+      },
+      {
         id: 'sample-j1',
         trigger: 'cansaco',
         period: 'antes_dormir',
@@ -248,9 +291,9 @@ export function createSampleAppState(now: Date = new Date()): PausaAppState {
       },
       {
         id: 'sample-j2',
-        trigger: 'tedio',
+        trigger: 'comparacao',
         period: 'antes_dormir',
-        needNote: 'Ler um capítulo curto no papel antes de apagar a luz',
+        needNote: 'Ler um capítulo curto no papel em vez de ver stories',
         createdAt: todayIso(38),
         source: 'pause',
       },
@@ -288,9 +331,9 @@ export function createSampleAppState(now: Date = new Date()): PausaAppState {
       },
       {
         id: 'sample-j7',
-        trigger: 'ansiedade',
-        period: 'noite',
-        needNote: 'Conversar com alguém de confiança ou anotar preocupações',
+        trigger: 'comparacao',
+        period: 'tarde',
+        needNote: 'Silenciar contas que me deixam inquieto durante a semana',
         createdAt: todayIso(20),
         source: 'pause',
       },

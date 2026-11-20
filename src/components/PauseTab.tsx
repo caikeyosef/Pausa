@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, CheckCircle2, Pause, Timer } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Moon, Pause, Timer } from 'lucide-react';
 import type { ActiveConsciousTimer, ArchetypeDetails, TabId } from '../types';
-import { formatRemainingSeconds } from '../utils/pausaLogic';
+import { formatRemainingSeconds, isNightTime } from '../utils/pausaLogic';
 
 interface PauseTabProps {
   dailyGoalMinutes: number;
@@ -10,6 +10,7 @@ interface PauseTabProps {
   environmentProgress: { completed: number; total: number; percentage: number };
   archetype: ArchetypeDetails | null;
   activeTimer: ActiveConsciousTimer | null;
+  simulateNightMode: boolean;
   onOpenPauseModal: () => void;
   onDismissTimer: () => void;
   onNavigateTab: (tab: TabId) => void;
@@ -22,11 +23,19 @@ export function PauseTab({
   environmentProgress,
   archetype,
   activeTimer,
+  simulateNightMode,
   onOpenPauseModal,
   onDismissTimer,
   onNavigateTab,
 }: PauseTabProps) {
   const [remainingSeconds, setRemainingSeconds] = useState<number>(0);
+  const [deviceNight, setDeviceNight] = useState<boolean>(() => isNightTime());
+
+  useEffect(() => {
+    const checkClock = () => setDeviceNight(isNightTime());
+    const interval = window.setInterval(checkClock, 60_000);
+    return () => window.clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!activeTimer) {
@@ -45,9 +54,29 @@ export function PauseTab({
   }, [activeTimer]);
 
   const timerEnded = Boolean(activeTimer) && remainingSeconds === 0;
+  const showNightBanner = deviceNight || simulateNightMode;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+    <div className="space-y-6">
+      {showNightBanner && (
+        <aside
+          role="status"
+          data-testid="night-mode-banner"
+          className="bg-white border border-[#E5E2DC] rounded-2xl px-4 py-3.5 sm:px-5 sm:py-4 flex items-start gap-3"
+        >
+          <Moon
+            className="w-4 h-4 text-[#6A8D73] shrink-0 mt-0.5"
+            strokeWidth={1.7}
+            aria-hidden="true"
+          />
+          <p className="text-xs sm:text-sm text-[#2B2D2B] leading-relaxed">
+            Hora de desacelerar. Reduzir telas antes de dormir melhora o descanso — que
+            tal deixar o celular longe da cama?
+          </p>
+        </aside>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
       {/* Primary Focal Column: The Conscious Pause Button */}
       <section className="lg:col-span-7 flex flex-col items-center text-center py-4 sm:py-8">
         <p className="text-xs sm:text-sm text-[#6B6F6C] mb-2">
@@ -178,6 +207,7 @@ export function PauseTab({
           </div>
         )}
       </aside>
+      </div>
     </div>
   );
 }

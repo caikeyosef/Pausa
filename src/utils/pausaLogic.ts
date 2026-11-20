@@ -32,6 +32,7 @@ export const DEFAULT_PROFILE_ANSWERS: ProfileAnswers = {
 export const INITIAL_APP_STATE: PausaAppState = {
   profile: null,
   grayscaleMode: false,
+  simulateNightMode: false,
   pauses: [],
   activeTimer: null,
   customOfflineActivities: [],
@@ -98,6 +99,22 @@ export function getCurrentDayPeriod(date: Date = new Date()): DayPeriodId {
   if (hour >= 12 && hour < 18) return 'tarde';
   if (hour >= 18 && hour < 22) return 'noite';
   return 'antes_dormir';
+}
+
+export function isNightTime(date: Date = new Date()): boolean {
+  const hour = date.getHours();
+  return hour >= 22 || hour < 5;
+}
+
+export function getDefaultTimerMinutes(duration: OfflineDuration): number {
+  switch (duration) {
+    case '2min':
+      return 2;
+    case '15min':
+      return 15;
+    case '30min':
+      return 30;
+  }
 }
 
 export function isSameLocalDay(isoDate: string, referenceDate: Date = new Date()): boolean {
@@ -279,6 +296,7 @@ export function loadPersistedState(): PausaAppState {
           ? parsed.offlineCompletedCount
           : 0,
       grayscaleMode: Boolean(parsed.grayscaleMode),
+      simulateNightMode: Boolean(parsed.simulateNightMode),
     };
   } catch {
     return INITIAL_APP_STATE;

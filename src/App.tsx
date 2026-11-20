@@ -130,6 +130,13 @@ export default function App() {
     }));
   };
 
+  const handleToggleSimulateNightMode = () => {
+    setState((prev) => ({
+      ...prev,
+      simulateNightMode: !prev.simulateNightMode,
+    }));
+  };
+
   const handleResistedPause = () => {
     setState((prev) => ({
       ...prev,
@@ -258,6 +265,7 @@ export default function App() {
     setState((prev) => ({
       ...sample,
       grayscaleMode: prev.grayscaleMode,
+      simulateNightMode: prev.simulateNightMode,
     }));
   };
 
@@ -338,6 +346,7 @@ export default function App() {
             environmentProgress={environmentProgress}
             archetype={archetype}
             activeTimer={state.activeTimer}
+            simulateNightMode={state.simulateNightMode}
             onOpenPauseModal={() => setIsPauseModalOpen(true)}
             onDismissTimer={handleDismissTimer}
             onNavigateTab={setActiveTab}
@@ -429,6 +438,8 @@ export default function App() {
         <ProfileMapModal
           mode="profile"
           existingProfile={state.profile}
+          simulateNightMode={state.simulateNightMode}
+          onToggleSimulateNightMode={handleToggleSimulateNightMode}
           onSaveProfile={handleSaveProfile}
           onClose={() => setIsProfileOpen(false)}
           onLoadSampleData={handleLoadSampleData}
