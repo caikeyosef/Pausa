@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="sageGlow" cx="50%" cy="42%" r="68%">
+      <stop offset="0%" stop-color="#769A7F" />
+      <stop offset="100%" stop-color="#5F8168" />
+    </radialGradient>
+  </defs>
+  <!-- Full-bleed opaque sage background (Apple HIG compliant for iOS squircle mask) -->
+  <rect width="512" height="512" fill="url(#sageGlow)" />
+  <!-- Subtle concentric breathing halo echoing the app's central Pause button -->
+  <circle cx="256" cy="256" r="168" fill="none" stroke="#F6F4EF" stroke-opacity="0.24" stroke-width="5" />
+  <circle cx="256" cy="256" r="128" fill="#F6F4EF" fill-opacity="0.10" />
+  <!-- Signature Pausa. rounded pause bars in warm sand -->
+  <rect x="200" y="182" width="38" height="148" rx="19" fill="#F6F4EF" />
+  <rect x="274" y="182" width="38" height="148" rx="19" fill="#F6F4EF" />
+</svg>

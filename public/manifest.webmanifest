@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "Pausa. — Bem-estar digital",
+  "short_name": "Pausa.",
+  "description": "Menos piloto automático, mais presença. Aplicativo de bem-estar digital e autorregulação baseado em evidências científicas.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#F6F4EF",
+  "background_color": "#F6F4EF",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
