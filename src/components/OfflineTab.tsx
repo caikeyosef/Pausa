@@ -123,7 +123,7 @@ export function OfflineTab({
                 role="tab"
                 aria-selected={active}
                 onClick={() => handleFilterChange(opt.id)}
-                className={`min-h-[40px] px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
+                className={`min-h-[42px] px-2 sm:px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                   active
                     ? 'bg-white text-[#2B2D2B] shadow-[0_1px_2px_rgba(43,45,43,0.06)]'
                     : 'text-[#6B6F6C] hover:text-[#2B2D2B]'
@@ -233,7 +233,7 @@ export function OfflineTab({
                 }}
                 placeholder="Ex.: Tocar violão por 10 minutos, regar as plantas..."
                 maxLength={100}
-                className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] text-sm text-[#2B2D2B] placeholder:text-[#6B6F6C]/70 focus:outline-none focus:border-[#6A8D73]"
+                className="w-full min-h-[46px] px-3.5 py-2.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] text-base sm:text-sm text-[#2B2D2B] placeholder:text-[#6B6F6C]/70 focus:outline-none focus:border-[#6A8D73]"
               />
             </div>
 
@@ -248,7 +248,7 @@ export function OfflineTab({
                 id="custom-offline-duration"
                 value={newDuration}
                 onChange={(e) => setNewDuration(e.target.value as OfflineDuration)}
-                className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] text-sm text-[#2B2D2B] focus:outline-none focus:border-[#6A8D73]"
+                className="w-full min-h-[46px] px-3.5 py-2.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] text-base sm:text-sm text-[#2B2D2B] focus:outline-none focus:border-[#6A8D73]"
               >
                 <option value="2min">2 min</option>
                 <option value="15min">15 min</option>

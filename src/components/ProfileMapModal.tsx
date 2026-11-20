@@ -424,16 +424,18 @@ export function ProfileMapModal({
 
   if (!isOverlay) {
     return (
-      <main className="min-h-dvh bg-[#F6F4EF] px-4 sm:px-6 py-8 sm:py-12">
-        <div className="max-w-3xl mx-auto mb-8 flex items-center justify-between">
-          <span className="text-xl font-semibold tracking-tight text-[#2B2D2B]">
-            Pausa<span className="text-[#6A8D73]">.</span>
-          </span>
-          <span className="text-xs text-[#6B6F6C]">
-            Menos piloto automático, mais presença.
-          </span>
+      <main className="min-h-dvh bg-[#F6F4EF] pt-safe pb-safe px-4 sm:px-6">
+        <div className="py-6 sm:py-12">
+          <div className="max-w-3xl mx-auto mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span className="text-xl font-semibold tracking-tight text-[#2B2D2B]">
+              Pausa<span className="text-[#6A8D73]">.</span>
+            </span>
+            <span className="text-xs text-[#6B6F6C]">
+              Menos piloto automático, mais presença.
+            </span>
+          </div>
+          {content}
         </div>
-        {content}
       </main>
     );
   }
@@ -443,9 +445,9 @@ export function ProfileMapModal({
       role="dialog"
       aria-modal="true"
       aria-label="Meu Perfil Digital"
-      className="fixed inset-0 z-50 bg-[#F6F4EF]/95 backdrop-blur-sm overflow-y-auto px-4 sm:px-6 py-6 sm:py-10"
+      className="fixed inset-0 z-50 bg-[#F6F4EF]/95 backdrop-blur-sm overflow-y-auto pt-safe pb-safe px-4 sm:px-6"
     >
-      {content}
+      <div className="py-5 sm:py-10">{content}</div>
     </div>
   );
 }

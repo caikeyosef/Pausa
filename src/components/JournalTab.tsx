@@ -197,17 +197,17 @@ export function JournalTab({
                   role="radio"
                   aria-checked={selected}
                   onClick={() => setSelectedTrigger(trigger.id)}
-                  className={`min-h-[48px] px-3 py-2.5 rounded-xl border text-left transition-colors ${
+                  className={`min-h-[52px] px-3 py-2.5 rounded-xl border text-left transition-colors ${
                     selected
                       ? 'bg-[#6A8D73] border-[#6A8D73] text-white'
                       : 'bg-[#FAF9F6] border-[#E5E2DC] text-[#2B2D2B] hover:border-[#6A8D73]/50'
                   }`}
                 >
-                  <span className="block text-sm font-medium leading-tight">
+                  <span className="block text-[13px] sm:text-sm font-medium leading-tight">
                     {trigger.label}
                   </span>
                   <span
-                    className={`block text-[11px] mt-0.5 ${
+                    className={`block text-[11px] mt-0.5 leading-snug ${
                       selected ? 'text-white/85' : 'text-[#6B6F6C]'
                     }`}
                   >
@@ -263,7 +263,7 @@ export function JournalTab({
               onChange={(e) => setNeedNote(e.target.value)}
               placeholder="Ex.: descansar os olhos, respirar, companhia..."
               maxLength={140}
-              className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] text-sm text-[#2B2D2B] placeholder:text-[#6B6F6C]/70 focus:outline-none focus:border-[#6A8D73]"
+              className="w-full min-h-[46px] px-3.5 py-2.5 rounded-xl bg-[#FAF9F6] border border-[#E5E2DC] text-base sm:text-sm text-[#2B2D2B] placeholder:text-[#6B6F6C]/70 focus:outline-none focus:border-[#6A8D73]"
             />
           </div>
 

@@ -92,6 +92,30 @@ export default function App() {
     };
   }, [state.grayscaleMode]);
 
+  // Prevent iOS Safari pinch-to-zoom gestures (Safari ignores user-scalable=no on iOS 10+)
+  useEffect(() => {
+    const preventGesture = (event: Event) => {
+      event.preventDefault();
+    };
+    const preventMultiTouch = (event: TouchEvent) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener('gesturestart', preventGesture, { passive: false });
+    document.addEventListener('gesturechange', preventGesture, { passive: false });
+    document.addEventListener('gestureend', preventGesture, { passive: false });
+    document.addEventListener('touchmove', preventMultiTouch, { passive: false });
+
+    return () => {
+      document.removeEventListener('gesturestart', preventGesture);
+      document.removeEventListener('gesturechange', preventGesture);
+      document.removeEventListener('gestureend', preventGesture);
+      document.removeEventListener('touchmove', preventMultiTouch);
+    };
+  }, []);
+
   const allOfflineActivities = useMemo(
     () => [...state.customOfflineActivities, ...DEFAULT_OFFLINE_ACTIVITIES],
     [state.customOfflineActivities]
@@ -294,26 +318,26 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#F6F4EF] text-[#2B2D2B] flex flex-col">
-      {/* Compact Sticky Top Bar (52px) */}
-      <header className="sticky top-0 z-30 h-[52px] bg-[#F6F4EF]/90 backdrop-blur-md border-b border-[#E5E2DC]">
-        <div className="max-w-5xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+    <div className="min-h-dvh bg-[#F6F4EF] text-[#2B2D2B] flex flex-col overflow-x-clip">
+      {/* Compact Sticky Top Bar with iPhone notch safe-area support */}
+      <header className="sticky top-0 z-30 pt-safe bg-[#F6F4EF]/95 backdrop-blur-md border-b border-[#E5E2DC]">
+        <div className="max-w-5xl mx-auto h-[52px] px-4 sm:px-6 flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={() => setActiveTab('pausar')}
-            className="text-lg font-semibold tracking-tight text-[#2B2D2B] whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6A8D73] rounded-md"
+            className="min-h-[44px] text-lg font-semibold tracking-tight text-[#2B2D2B] whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6A8D73] rounded-md"
           >
             Pausa<span className="text-[#6A8D73]">.</span>
           </button>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             <button
               type="button"
               onClick={handleToggleGrayscale}
               aria-pressed={state.grayscaleMode}
               aria-label="Alternar modo tons de cinza"
               title="Modo tons de cinza"
-              className={`min-h-[40px] px-3 rounded-xl text-xs font-medium inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[44px] min-w-[44px] px-2.5 sm:px-3 rounded-xl text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap shrink-0 ${
                 state.grayscaleMode
                   ? 'bg-[#2B2D2B] text-white'
                   : 'text-[#6B6F6C] hover:text-[#2B2D2B] hover:bg-[#EAE6DE]'
@@ -327,7 +351,7 @@ export default function App() {
               type="button"
               onClick={() => setIsProfileOpen(true)}
               aria-label="Abrir Meu Perfil Digital"
-              className="min-h-[40px] px-3 rounded-xl text-xs font-medium text-[#2B2D2B] hover:bg-[#EAE6DE] inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[44px] px-2.5 sm:px-3 rounded-xl text-xs font-medium text-[#2B2D2B] hover:bg-[#EAE6DE] inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
             >
               <User className="w-4 h-4 text-[#6A8D73]" strokeWidth={1.6} />
               <span>Meu Perfil</span>
@@ -336,8 +360,8 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Content Area (bottom padding leaves clear room above 60px fixed bottom nav) */}
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-24">
+      {/* Main Content Area (bottom padding accounts for fixed bottom nav + iPhone home indicator) */}
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-nav-safe">
         {activeTab === 'pausar' && (
           <PauseTab
             dailyGoalMinutes={state.profile.dailyGoalMinutes}
@@ -387,12 +411,12 @@ export default function App() {
         )}
       </main>
 
-      {/* Fixed Bottom 4-Tab Navigation Bar (60px height — total sticky <= 112px = 13.3% on 844px mobile) */}
+      {/* Fixed Bottom 4-Tab Navigation Bar with iPhone home indicator safe-area */}
       <nav
         aria-label="Navegação principal"
-        className="fixed bottom-0 left-0 right-0 z-30 h-[60px] bg-white/95 backdrop-blur-md border-t border-[#E5E2DC]"
+        className="fixed bottom-0 left-0 right-0 z-30 pb-safe bg-white/95 backdrop-blur-md border-t border-[#E5E2DC]"
       >
-        <div className="max-w-xl mx-auto h-full grid grid-cols-4 items-center px-2">
+        <div className="max-w-xl mx-auto h-[60px] grid grid-cols-4 items-center px-1.5">
           {NAV_TABS.map(({ id, label, Icon }) => {
             const isActive = activeTab === id;
             return (

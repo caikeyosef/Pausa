@@ -76,15 +76,15 @@ export function PauseTab({
         </aside>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
       {/* Primary Focal Column: The Conscious Pause Button */}
-      <section className="lg:col-span-7 flex flex-col items-center text-center py-4 sm:py-8">
-        <p className="text-xs sm:text-sm text-[#6B6F6C] mb-2">
+      <section className="lg:col-span-7 flex flex-col items-center text-center py-2 sm:py-8">
+        <p className="text-xs sm:text-sm text-[#6B6F6C] mb-1.5">
           Menos piloto automático, mais presença.
         </p>
 
         {/* Quiet unboxed daily status metadata */}
-        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-xs sm:text-sm text-[#6B6F6C] mb-8 sm:mb-10">
+        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-xs sm:text-sm text-[#6B6F6C] mb-6 sm:mb-10">
           <span className="tabular-nums">
             Meta diária: <strong className="font-semibold text-[#2B2D2B]">{dailyGoalMinutes} min</strong>
           </span>
@@ -97,17 +97,17 @@ export function PauseTab({
 
         {/* Central Circular Sage Pause Button */}
         <div className="relative flex items-center justify-center">
-          <div className="w-60 h-60 sm:w-68 sm:h-68 rounded-full border border-[#6A8D73]/20 flex items-center justify-center">
+          <div className="w-56 h-56 sm:w-68 sm:h-68 rounded-full border border-[#6A8D73]/20 flex items-center justify-center">
             <button
               type="button"
               onClick={onOpenPauseModal}
-              className="w-52 h-52 sm:w-56 sm:h-56 rounded-full bg-[#6A8D73] hover:bg-[#587860] active:scale-[0.98] text-white flex flex-col items-center justify-center px-6 transition-all duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6A8D73] shadow-[0_14px_34px_-14px_rgba(106,141,115,0.55)] cursor-pointer"
+              className="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-[#6A8D73] hover:bg-[#587860] active:scale-[0.98] text-white flex flex-col items-center justify-center px-5 transition-all duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#6A8D73] shadow-[0_14px_34px_-14px_rgba(106,141,115,0.55)] cursor-pointer"
             >
-              <Pause className="w-7 h-7 mb-3 opacity-90" strokeWidth={1.6} aria-hidden="true" />
+              <Pause className="w-7 h-7 mb-2.5 opacity-90" strokeWidth={1.6} aria-hidden="true" />
               <span className="text-xl sm:text-2xl font-semibold tracking-tight leading-tight">
                 Fazer uma Pausa.
               </span>
-              <span className="text-xs text-white/85 mt-2 leading-snug max-w-[160px]">
+              <span className="text-xs text-white/85 mt-1.5 leading-snug max-w-[155px]">
                 Toque antes de abrir uma rede social
               </span>
             </button>

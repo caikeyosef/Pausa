@@ -116,10 +116,10 @@ export function OfflineTimerModal({
       role="dialog"
       aria-modal="true"
       aria-label={`Timer para ${activity.title}`}
-      className="fixed inset-0 z-50 bg-[#F6F4EF] flex flex-col justify-between px-5 py-6 sm:p-10 overflow-y-auto"
+      className="fixed inset-0 z-50 bg-[#F6F4EF] flex flex-col justify-between px-4 sm:px-10 pt-safe pb-safe overflow-y-auto"
     >
       {/* Top Bar */}
-      <div className="max-w-lg w-full mx-auto flex items-center justify-between">
+      <div className="max-w-lg w-full mx-auto flex items-center justify-between pt-4 sm:pt-8">
         <span className="text-base font-semibold tracking-tight text-[#2B2D2B]">
           Pausa<span className="text-[#6A8D73]">.</span>
         </span>

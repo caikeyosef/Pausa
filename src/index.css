@@ -18,6 +18,11 @@
     background-color: #F6F4EF;
     color: #2B2D2B;
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: none;
+    overflow-x: hidden;
   }
 
   html.pausa-grayscale {
@@ -29,7 +34,40 @@
     min-height: 100dvh;
     background-color: #F6F4EF;
     color: #2B2D2B;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
   }
+
+  /* Prevent iOS Safari from auto-zooming on focused inputs/selects */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  button,
+  a,
+  [role="button"],
+  [role="tab"],
+  [role="radio"],
+  [role="checkbox"],
+  [role="switch"] {
+    touch-action: manipulation;
+  }
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pb-nav-safe {
+  padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
 }
 
 /* Custom calm range slider styling */
